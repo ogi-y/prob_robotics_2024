@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 
 # 環境の設定
-state_space = 11  # 位置は-5から5までの11個の状態
+state_space = 100  # 位置は-5から5までの11個の状態
 action_space = 2  # 行動は2つ（左に進む、右に進む）
 goal = 5  # 目標位置
 
@@ -79,7 +79,7 @@ for state in range(state_space):
 ax.annotate('Goal', (goal - 5, 0), textcoords="offset points", xytext=(0, 20), ha='center', color='blue', fontsize=12)
 
 # グラフの設定
-ax.set_xlim(-5.5, 5.5)
+ax.set_xlim(-5, 5)
 ax.set_ylim(-1, 1)
 ax.set_xticks(range(-5, 6))
 ax.set_yticks([])
