@@ -1,122 +1,132 @@
 import numpy as np
+import random
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter
+import matplotlib.animation as animation
 
-# 定数
-grid_size = 10
+# 環境設定
+grid_width = 10  # グリッドの幅
+grid_height = 10  # グリッドの高さ
+num_actions = 3  # 左移動, 右移動, 何もしない
+epsilon = 0.1  # ε-greedy法のε
 alpha = 0.1  # 学習率
-gamma = 0.95  # 割引率
-epsilon = 0.1  # 探索率
-actions = [-1, 0, 1]  # 左移動、停止、右移動
-
-# 報酬
-reward_catch = 10
-reward_miss = -10
-reward_step = -1
+gamma = 0.9  # 割引率
+episodes = 500  # 学習エピソード数
 
 # Qテーブルの初期化
-q_table = np.zeros((grid_size, grid_size, len(actions)))
+q_table = np.zeros((grid_width, grid_height, num_actions))
 
-# Q学習の実行
-def train_q_learning(episodes=500):
+# アイテムの設定
+item_drop_position = [3, 5, 6, 1, 3]  # アイテムが落ちる位置（x座標）
+
+# エージェントの初期位置
+player_pos = grid_width // 2
+
+# 行動選択
+def choose_action(state, epsilon):
+    if random.uniform(0, 1) < epsilon:
+        return random.randint(0, num_actions - 1)  # ランダムに行動を選択
+    else:
+        return np.argmax(q_table[state[0], state[1], :])  # 最大Q値の行動を選択
+
+# 環境のリセット
+def reset_environment():
+    return [grid_width // 2, 0]  # エージェントを中央に配置、アイテムはy=0からスタート
+
+# 学習
+def train_q_learning(episodes):
     for episode in range(episodes):
-        player_pos = grid_size // 2
-        item_pos = np.random.randint(0, grid_size)
-        item_y = grid_size - 1
+        state = reset_environment()
+        item_y = 10  # アイテムの初期位置
+        item_x = random.choice(item_drop_position)
+        done = False
+        total_reward = 0
 
-        while item_y >= 0:
-            # 状態の取得
-            state = (player_pos, item_pos)
+        while not done:
+            action = choose_action(state, epsilon)  # 行動選択
+            # 行動の結果
+            if action == 0:  # 左に移動
+                player_pos = max(0, state[0] - 1)
+            elif action == 1:  # 右に移動
+                player_pos = min(grid_width - 1, state[0] + 1)
+            else:  # 何もしない
+                player_pos = state[0]
             
-            # ε-greedyポリシーで行動を選択
-            if np.random.rand() < epsilon:
-                action = np.random.choice(len(actions))  # ランダム行動
-            else:
-                action = np.argmax(q_table[player_pos, item_pos])  # 最大Q値の行動
-
-            # 行動を実行
-            player_pos = max(0, min(grid_size - 1, player_pos + actions[action]))
-            item_y -= 1
-
-            # 次の状態
-            next_state = (player_pos, item_pos)
-
-            # 報酬の計算
-            if item_y == 0:  # アイテムが最下段に到達
-                if player_pos == item_pos:
-                    reward = reward_catch  # キャッチ成功
+            # アイテムの位置更新
+            item_y -= 1  # アイテムが1フレーム下に落ちる
+            if item_y == 0:  # アイテムが下に着いた場合
+                if player_pos == item_x:  # アイテムをキャッチ
+                    reward = 1  # 報酬を与える
                 else:
-                    reward = reward_miss  # キャッチ失敗
+                    reward = -1  # アイテムをキャッチできなかった場合は罰
+                item_y = 10  # 新しいアイテムがy=10から落ちる
+                item_x = random.choice(item_drop_position)
             else:
-                reward = reward_step  # 通常の移動ペナルティ
-
+                reward = 0  # アイテムはまだキャッチされていない
+            
             # Q値の更新
-            best_next_action = np.argmax(q_table[next_state[0], next_state[1]])
-            q_table[state[0], state[1], action] += alpha * (
-                reward + gamma * q_table[next_state[0], next_state[1], best_next_action]
-                - q_table[state[0], state[1], action]
-            )
+            next_state = [player_pos, item_y]
+            
+            # next_state[1] (アイテムのy位置)がgrid_heightより大きくならないように調整
+            next_state[1] = min(grid_height - 1, next_state[1])  # 0からgrid_height-1の範囲に収める
 
-            # アイテムが最下段ならリセット
+            max_next_q = np.max(q_table[next_state[0], next_state[1], :])
+            q_table[state[0], state[1], action] = (1 - alpha) * q_table[state[0], state[1], action] + alpha * (reward + gamma * max_next_q)
+
+            # 次の状態に更新
+            state = next_state
+
+            # エピソード終了条件（アイテムを3回落とした場合、または制限時間経過）
             if item_y == 0:
-                item_pos = np.random.randint(0, grid_size)
-                item_y = grid_size - 1
+                done = True
 
-# 学習後のエージェント動作をシミュレート
-def simulate_trained_agent(frames=20):
-    player_pos = grid_size // 2
-    item_pos = np.random.randint(0, grid_size)
-    item_y = grid_size - 1
-    frames_data = []
+        # 進行状況
+        if episode % 50 == 0:
+            print(f"Episode {episode}/{episodes} - Total reward: {total_reward}")
 
-    for _ in range(frames):
-        frames_data.append((player_pos, (item_pos, item_y)))
+# 学習結果の可視化
+def plot_environment(player_pos, item_x, item_y):
+    grid = np.zeros((grid_height, grid_width))
+    grid[item_y, item_x] = 1  # アイテムの位置
+    grid[0, player_pos] = 2  # プレイヤーの位置
+    
+    plt.imshow(grid, cmap='Blues', origin='lower')
+    plt.xticks(np.arange(0, grid_width, 1))
+    plt.yticks(np.arange(0, grid_height, 1))
+    plt.grid(True)
 
-        # Q値に基づく最適行動を選択
-        action = np.argmax(q_table[player_pos, item_pos])
-        player_pos = max(0, min(grid_size - 1, player_pos + actions[action]))
-        item_y -= 1
+# シミュレーションと結果表示
+def simulate_and_show_result():
+    state = reset_environment()
+    item_y = 10
+    item_x = random.choice(item_drop_position)
+    
+    fig, ax = plt.subplots()
+    ims = []
 
-        if item_y < 0:  # アイテムが最下段に到達
-            item_pos = np.random.randint(0, grid_size)
-            item_y = grid_size - 1
+    for frame in range(50):  # 50フレーム進める
+        action = choose_action(state, 0)  # 学習したQテーブルを使って行動選択
+        if action == 0:  # 左に移動
+            player_pos = max(0, state[0] - 1)
+        elif action == 1:  # 右に移動
+            player_pos = min(grid_width - 1, state[0] + 1)
+        else:  # 何もしない
+            player_pos = state[0]
+        
+        item_y -= 1  # アイテムが1フレーム下に落ちる
+        if item_y == 0:  # アイテムが下に着いた場合
+            item_y = 10  # 新しいアイテムがy=10から落ちる
+            item_x = random.choice(item_drop_position)
 
-    return frames_data
+        ims.append([plot_environment(player_pos, item_x, item_y)])  # 現在の状態を記録
 
-# アニメーション作成関数
-def create_animation(frames):
-    fig, ax = plt.subplots(figsize=(5, 5))
-    ax.set_xlim(-1, grid_size)
-    ax.set_ylim(-1, grid_size)
-    ax.set_xticks(range(grid_size))
-    ax.set_yticks(range(grid_size))
-    ax.grid(True)
+        # 次の状態に更新
+        state = [player_pos, item_y]
 
-    player_marker, = ax.plot([], [], 'ro', label="Player", markersize=15)
-    item_marker, = ax.plot([], [], 'bo', label="Item", markersize=15)
-    ax.legend()
+    ani = animation.ArtistAnimation(fig, ims, interval=500, blit=True)
+    plt.show()
 
-    def init():
-        player_marker.set_data([], [])
-        item_marker.set_data([], [])
-        return player_marker, item_marker
-
-    def update(frame):
-        player_pos, (item_x, item_y) = frame
-        player_marker.set_data([player_pos], [0])
-        item_marker.set_data([item_x], [item_y])
-        return player_marker, item_marker
-
-    ani = FuncAnimation(fig, update, frames=frames, init_func=init, blit=True, interval=500)
-    return ani
-
-# Q学習の訓練
+# 学習の開始
 train_q_learning(episodes=500)
 
-# 学習後のエージェントをシミュレート
-frames = simulate_trained_agent(frames=20)
-
-# アニメーション作成と保存
-ani = create_animation(frames)
-ani.save("trained_agent.gif", writer=PillowWriter(fps=2))
-print("GIFを保存しました: trained_agent.gif")
+# 結果の可視化
+simulate_and_show_result()

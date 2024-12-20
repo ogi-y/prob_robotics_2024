@@ -32,7 +32,7 @@ def choose_action(state):
         return np.argmax(Q[state])
 
 # 1エピソードの学習
-def train(epochs=10000):
+def train(epochs=100000):
     for _ in range(epochs):
         state = 5  # 初期位置は0（状態空間の中央）
         
