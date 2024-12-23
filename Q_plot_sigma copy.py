@@ -55,6 +55,7 @@ plt.plot(range(1, 21), goal_times, marker='o', linestyle='-', color='b')
 plt.title('Average Goal Reaching Time per Episode')
 plt.xlabel('Episode')
 plt.ylabel('Average Time Steps to Goal')
+plt.xticks(range(1, 21))
 plt.grid(True)
 
 # 各点の上に座標を表示

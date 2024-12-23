@@ -10,7 +10,6 @@ actions = [-1, 1]  # 行動: 左(-1)か右(+1)
 
 # Q学習のパラメータ
 alpha = 0.5  # 学習率
-gamma = 0.9  # 割引率
 epsilon = 0.3  # ε-greedy法の探索率
 episodes = 20  # エピソード数
 
@@ -49,7 +48,7 @@ for episode in range(episodes):
         
         # Q値の更新
         Q_table[state, action_index] += alpha * (
-            reward + gamma * np.max(Q_table[next_state]) - Q_table[state, action_index]
+            reward + np.max(Q_table[next_state]) - Q_table[state, action_index]
         )
         
         # 状態を更新
