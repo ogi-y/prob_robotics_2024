@@ -14,7 +14,7 @@ obstacles = [2]  # 障害物の位置
 policy = np.load('policy/episode_15.npy')  # 最後の方策を読み込み（エピソード10）
 
 # σ（探索の確率）
-sigma = 0.1  # 0.1 の確率でランダム行動を選択
+sigma = 0.3  # 0.1 の確率でランダム行動を選択
 
 # エージェントの状態
 state = start_state
