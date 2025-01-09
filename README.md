@@ -13,3 +13,5 @@ pip install numpy matplotlib
 ```bash
 python main.py
 ```
+
+## 各コードの概要
