@@ -101,7 +101,7 @@ Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \
 
 ## 実行環境
 * python 3.9.13
-  * 使用ライブラリ
-    * numpy
-    * matplotlib
+* 使用ライブラリ
+  * numpy 2.0.2
+  * matplotlib 3.9.4
 * windows 11
