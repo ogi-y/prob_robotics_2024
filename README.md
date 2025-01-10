@@ -30,8 +30,8 @@ python Q_train.py
 Q学習の更新式は以下です。
 
 $$
-Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha [ r + \max_{a'} Q(s', a') ]
+Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \right]
 $$
 
 ## ε-グリーディ方策
-確率\( \epsilon \)でランダムに行動を選択し、\( 1 - \epsilon \)の確率で最適な行動を選択します。
+確率$\epsilon$でランダムに行動を選択し、確率$1 - \epsilon$で$Q(s, a)$が最大となる行動を選択します。
