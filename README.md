@@ -11,15 +11,24 @@ pip install numpy matplotlib
 ```
 コードの実行は以下のように行います。
 ```bash
-python main.py
+python Q_train.py
 ```
 
-## 各コードの概要
+## 各ファイルの概要
 * Q_train.py
   * Q学習を行い、各エピソードを保存します。
-* Q_plot_animation.py
-  * 学習の結果得られた方策を表示し、それに従いエージェントを移動させます。
 * Q_plot_animation_eps.py
   * 学習の結果得られた方策を表示し、それに従いエージェントを移動させますが、確率εでランダムに行動をさせます。（ε-greedy方策）
 * Q_plot_eps.py
   * 各エピソードによって得た方策ををε-greedy方策に従って10回ずつ試行し、平均のゴール時間をグラフにします。
+* env_loader.py
+  * シミュレーション環境を読み込みます。
+* env.csv
+  * シミュレーション環境が記述されています。
+
+## Q学習の説明
+Q学習の更新式は以下です。
+
+\[
+Q(s, a) \leftarrow Q(s, a) + \alpha \left( r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right)
+\]
