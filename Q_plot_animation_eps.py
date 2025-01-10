@@ -14,7 +14,6 @@ obstacles = env_settings["obstacles"]
 water = env_settings["water"]
 actions = env_settings["actions"]
 
-#random.seed(0)
 episode = [1,10,20,30]
 for episode_num in episode:
         
