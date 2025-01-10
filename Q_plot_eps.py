@@ -11,12 +11,11 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-# σ（探索の確率）
-sigma = 0.3  # 0.1 の確率でランダム行動を選択
+eps = 0.3  # 0.1 の確率でランダム行動を選択
 
 # 行動選択（ランダムまたは方策に従う）
 def choose_action(state, policy):
-    if np.random.uniform(0, 1) < sigma:
+    if np.random.uniform(0, 1) < eps:
         return np.random.choice([-1, 1])  # ランダムに行動
     else:
         return policy[state]  # 方策に従う

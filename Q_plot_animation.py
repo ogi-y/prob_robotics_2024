@@ -15,20 +15,10 @@ water = env_settings['water']
 actions = env_settings['actions']
 
 # 最終的な方策を読み込む
-policy = np.load('policy/episode_15.npy')  # 最後の方策を読み込み（エピソード10）
-
-# σ（探索の確率）
-sigma = 0.3  # 0.1 の確率でランダム行動を選択
+policy = np.load('policy/episode_10.npy')
 
 # エージェントの状態
 state = start_state
-
-# 行動選択（ランダムまたは方策に従う）
-def choose_action(state):
-    if random.uniform(0, 1) < sigma:
-        return random.choice([-1, 1])  # ランダムに行動
-    else:
-        return policy[state]  # 方策に従う
 
 # アニメーションを作成するための関数
 def animate_agent(i, line, ax):
@@ -36,7 +26,7 @@ def animate_agent(i, line, ax):
 
     # エージェントが次の状態に移動
     if state != goal_state:
-        action = choose_action(state)  # σ に従って行動を選択
+        action = policy[state]  # 方策に従って行動（右か左）
         state = max(0, min(n_states - 1, state + action))  # 状態遷移
 
     # エージェントの位置を更新
@@ -60,12 +50,14 @@ def plot_animation():
     # 障害物の四角
     for obs in obstacles:
         ax.add_patch(patches.Rectangle((obs - 0.5, 0), 1, 0.5, facecolor='red'))
+    for pud in water:
+        ax.add_patch(patches.Rectangle((pud - 0.5, -0.5), 1, 0.5, facecolor='blue'))
 
     # ゴールの丸
     ax.add_patch(patches.Circle((goal_state - 0.5, 0.2), 0.2, facecolor='green'))
 
     # エージェントの位置（初期位置）
-    agent, = ax.plot([], [], 'bo', markersize=10)  # エージェント（青い点）
+    agent, = ax.plot([], 'bo', markersize=10)  # エージェント（青い点）
 
     # 政策の矢印
     for i in range(n_states):

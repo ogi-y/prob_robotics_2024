@@ -11,10 +11,9 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-# Q学習のパラメータ
-alpha = 0.5  # 学習率
-epsilon = 0.3  # ε-greedy法の探索率
-episodes = 20  # エピソード数
+alpha = 0.5
+epsilon = 0.3
+episodes = 20
 
 # Qテーブルの初期化
 Q_table = np.zeros((n_states, len(actions)))
