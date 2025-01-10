@@ -14,7 +14,7 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-episode = 20
+episode = 30
 policy = np.load(f'policy/episode_{episode}.npy')
 
 eps = 0.3
@@ -82,7 +82,7 @@ def plot_animation():
     flag_s = patches.Polygon([(start_state, 0.3), (start_state + 0.4, 0.5), (start_state, 0.7)], 
                             closed=True, facecolor='green')
     ax.add_patch(flag_s)
-    agent, = ax.plot([start_state], [0.2], 'go', markersize=10)
+    agent, = ax.plot([state], [0.2], 'go', markersize=8)
     reward_text = ax.text(0, 1.5, "Reward: 0", fontsize=12, color='black')
     cumulative_reward_text = ax.text(0, 1, "Cumulative Reward: 0", fontsize=12, color='black')
     frame_text = ax.text(0, -1, "Frame: 0", fontsize=12, color='black')
