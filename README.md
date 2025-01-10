@@ -15,7 +15,7 @@ pip install numpy matplotlib
 python Q_train.py
 ```
 
-## 各ファイルの概要
+## 各ファイル、フォルダの概要
 * Q_train.py
   * Q学習を行い、各エピソードを保存します。
 * Q_plot_animation_eps.py
@@ -26,6 +26,10 @@ python Q_train.py
   * シミュレーション環境を読み込みます。
 * env.csv
   * シミュレーション環境が記述されています。
+* images
+  * 結果などの画像が保存されています。
+* policy
+  * エピソードごとの方策が保存されています。
 
 ## 変数設定
 env.csv内の変数の意味は以下のとおりです。
