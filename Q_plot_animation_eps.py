@@ -58,7 +58,8 @@ for episode_num in episode:
 
             reward_text.set_text(f"Reward: {reward}")
             cumulative_reward_text.set_text(f"Total Reward: {cumulative_reward}")
-            frame_text.set_text(f"Frame: {i}")
+            if goal_reached == False:
+                frame_text.set_text(f"Frame: {i}")
 
             if state == goal_state :    
                 goal_reached = True
