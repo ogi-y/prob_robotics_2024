@@ -47,8 +47,11 @@ Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \
 1番目のエピソードの学習結果の方策は以下です。
 ![エピソード1](images/episode_1.gif)
 
-15番目のエピソードの学習結果の方策は以下です。
-![エピソード15](images/episode_15.gif)
+10番目のエピソードの学習結果の方策は以下です。
+![エピソード10](images/episode_10.gif)
+
+20番目のエピソードの学習結果の方策は以下です。
+![エピソード10](images/episode_20.gif)
 
 30番目のエピソードの学習結果の方策は以下です。
 ![エピソード30](images/episode_30.gif)
