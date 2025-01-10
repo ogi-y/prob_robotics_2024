@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.animation as animation
 import env_loader
+import os
 
 env_settings = env_loader.load_env('env.csv')
 n_states = env_settings['n_states']
@@ -13,7 +14,8 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-policy = np.load('policy/episode_25.npy')
+episode = 0
+policy = np.load(f'policy/episode_{episode}.npy')
 
 eps = 0.3
 
@@ -48,10 +50,10 @@ def animate_agent(i, line, ax, reward_text, cumulative_reward_text, frame_text):
     if goal_reached == False:
         cumulative_reward += reward
 
-    line.set_data([state - 0.5], [0.2])
+    line.set_data([state], [0.2])
 
     reward_text.set_text(f"Reward: {reward}")
-    cumulative_reward_text.set_text(f"Cumulative Reward: {cumulative_reward}")
+    cumulative_reward_text.set_text(f"Total Reward: {cumulative_reward}")
     frame_text.set_text(f"Frame: {i}")
 
     if state == goal_state :    
@@ -70,17 +72,17 @@ def plot_animation():
         ax.add_patch(patches.Rectangle((obs - 0.5, 0), 1, 0.5, facecolor='red'))
     for wat in water:
         ax.add_patch(patches.Rectangle((wat - 0.5, -0.5), 1, 0.5, facecolor='blue'))
-    flag_pole_g = patches.Rectangle((goal_state - 0.5, 0), 0.1, 0.6, facecolor='black')
+    flag_pole_g = patches.Rectangle((goal_state, 0), 0.1, 0.6, facecolor='black')
     ax.add_patch(flag_pole_g)
-    flag_g = patches.Polygon([(goal_state - 0.5, 0.3), (goal_state - 0.1, 0.5), (goal_state - 0.5, 0.7)], 
+    flag_g = patches.Polygon([(goal_state, 0.3), (goal_state+0.4, 0.5), (goal_state, 0.7)], 
                             closed=True, facecolor='red')
     ax.add_patch(flag_g)
-    flag_pole_s = patches.Rectangle((start_state - 0.5, 0), 0.1, 0.6, facecolor='black')
+    flag_pole_s = patches.Rectangle((start_state, 0), 0.1, 0.6, facecolor='black')
     ax.add_patch(flag_pole_s)
-    flag_s = patches.Polygon([(start_state - 0.5, 0.3), (start_state - 0.1, 0.5), (start_state - 0.5, 0.7)], 
+    flag_s = patches.Polygon([(start_state, 0.3), (start_state + 0.4, 0.5), (start_state, 0.7)], 
                             closed=True, facecolor='green')
     ax.add_patch(flag_s)
-    agent, = ax.plot([start_state - 0.5], [0.2], 'go', markersize=10)
+    agent, = ax.plot([start_state], [0.2], 'go', markersize=10)
     reward_text = ax.text(0, 1.5, "Reward: 0", fontsize=12, color='black')
     cumulative_reward_text = ax.text(0, 1, "Cumulative Reward: 0", fontsize=12, color='black')
     frame_text = ax.text(0, -1, "Frame: 0", fontsize=12, color='black')
@@ -96,6 +98,8 @@ def plot_animation():
     ani = animation.FuncAnimation(fig, animate_agent, frames=100, fargs=(agent, ax, reward_text, cumulative_reward_text, frame_text),
                                   interval=500, repeat=False)
     #plt.show()
-    ani.save('q_learning_animation.gif', fps=2)
+    if not os.path.exists('images'):
+        os.makedirs('images')
+    ani.save(f'gif/episode_{episode}.gif', fps=2)
 
 plot_animation()
