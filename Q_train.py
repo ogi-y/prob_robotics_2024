@@ -51,6 +51,6 @@ for episode in range(episodes):
 
     if episode % 1 == 0 or episode == episodes - 1:
         policy = [actions[np.argmax(Q_table[state])] for state in range(n_states)]
-        np.save(f'policy/episode_{episode}.npy', policy)
+        np.save(f'policy/episode_{episode+1}.npy', policy)
 
 print("学習終了")

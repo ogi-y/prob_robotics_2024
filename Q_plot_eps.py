@@ -56,11 +56,11 @@ def calculate_average_goal_time():
 
 goal_times = calculate_average_goal_time()
 
-plt.plot(range(episodes), goal_times, marker='o', linestyle='-', color='b')
+plt.plot(range(1,episodes+1), goal_times, marker='o', linestyle='-', color='b')
 plt.title('Average Goal Reaching Step per Episode')
 plt.xlabel('Episode')
 plt.ylabel('Average Steps to Goal')
-plt.xticks(range(episodes))
+plt.xticks(range(1,episodes+1))
 plt.grid(True)
 
 for i, goal_time in enumerate(goal_times):
