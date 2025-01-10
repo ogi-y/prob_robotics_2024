@@ -14,7 +14,7 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-episode = 30
+episode = 1
 policy = np.load(f'policy/episode_{episode}.npy')
 
 eps = 0.3
@@ -95,7 +95,7 @@ def plot_animation():
     ax.axis('off')
     ax.axis('equal')
 
-    ani = animation.FuncAnimation(fig, animate_agent, frames=100, fargs=(agent, ax, reward_text, cumulative_reward_text, frame_text),
+    ani = animation.FuncAnimation(fig, animate_agent, frames=20, fargs=(agent, ax, reward_text, cumulative_reward_text, frame_text),
                                   interval=500, repeat=False)
     #plt.show()
     if not os.path.exists('images'):
