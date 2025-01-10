@@ -14,7 +14,7 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-episode = 0
+episode = 14
 policy = np.load(f'policy/episode_{episode}.npy')
 
 eps = 0.3
@@ -100,6 +100,6 @@ def plot_animation():
     #plt.show()
     if not os.path.exists('images'):
         os.makedirs('images')
-    ani.save(f'gif/episode_{episode}.gif', fps=2)
+    ani.save(f'images/episode_{episode}.gif', fps=2)
 
 plot_animation()
