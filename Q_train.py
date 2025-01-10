@@ -1,12 +1,15 @@
 import numpy as np
 import random
+import env_loader
 
 # 環境の設定
-n_states = 20  # 数直線の長さ
-goal_state = n_states - 1  # ゴール地点
-start_state = 5  # 開始地点
-obstacles = [2]  # 障害物の位置
-actions = [-1, 1]  # 行動: 左(-1)か右(+1)
+env_settings = env_loader.load_env('env.csv')
+n_states = env_settings['n_states']
+goal_state = env_settings['goal_state']
+start_state = env_settings['start_state']
+obstacles = env_settings['obstacles']
+water = env_settings['water']
+actions = env_settings['actions']
 
 # Q学習のパラメータ
 alpha = 0.5  # 学習率
@@ -22,6 +25,8 @@ def get_reward(state):
         return 100  # ゴールに到達した場合の報酬
     elif state in obstacles:
         return -100  # 障害物にぶつかった場合のペナルティ
+    elif state in water:
+        return -10  # パンダにぶつかった場合のペナルティ
     else:
         return -1  # 移動に対するペナルティ
 
