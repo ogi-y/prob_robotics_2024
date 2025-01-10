@@ -66,4 +66,5 @@ plt.grid(True)
 for i, goal_time in enumerate(goal_times):
     plt.text(i, goal_time+5, f'{goal_time:.1f}', ha='center', fontsize=10)
 
-plt.show()
+#plt.show()
+plt.savefig('images/average_goal_time.png')
