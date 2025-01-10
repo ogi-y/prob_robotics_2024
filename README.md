@@ -30,5 +30,5 @@ python Q_train.py
 Q学習の更新式は以下です。
 
 $$
-Q(s, a) \leftarrow Q(s, a) + \alpha \left( r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right)
+Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \right]
 $$
