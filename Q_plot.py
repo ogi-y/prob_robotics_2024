@@ -11,7 +11,7 @@ start_state = 5  # 開始地点
 obstacles = [2]  # 障害物の位置
 
 # 最終的な方策を読み込む
-policy = np.load('policy/episode_10.npy')  # 最後の方策を読み込み（500回目のエピソード）
+policy = np.load('policy/episode_20.npy')  # 最後の方策を読み込み（500回目のエピソード）
 
 # エージェントの状態
 state = start_state
