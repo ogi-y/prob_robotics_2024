@@ -14,7 +14,7 @@ obstacles = env_settings['obstacles']
 water = env_settings['water']
 actions = env_settings['actions']
 
-episode = 1
+episode = 20
 policy = np.load(f'policy/episode_{episode}.npy')
 
 eps = 0.3
