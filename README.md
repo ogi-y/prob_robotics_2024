@@ -85,6 +85,7 @@ Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \
 |緑の円|エージェント|
 |赤い四角形|障害物|
 |青い四角形|水たまり|
+|矢印|その地点での方策|
 
 以下は、1番目のエピソードで得られた方策に従いエージェントが行動する様子です。
 ![エピソード1](images/episode_1.gif)
@@ -97,3 +98,10 @@ Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \
 
 以下は、30番目のエピソードで得られた方策に従いエージェントが行動する様子です。
 ![エピソード30](images/episode_30.gif)
+
+## 実行環境
+* python 3.9.13
+  * 使用ライブラリ
+    * numpy
+    * matplotlib
+* windows 11
