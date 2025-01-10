@@ -84,7 +84,7 @@ Q(s, a) \leftarrow (1 - \alpha)Q(s, a) + \alpha \left[ r + \max_{a'} Q(s', a') \
 ![エピソード10](images/episode_10.gif)
 
 以下は、20番目のエピソードで得られた方策に従いエージェントが行動する様子です。
-![エピソード10](images/episode_20.gif)
+![エピソード20](images/episode_20.gif)
 
 以下は、30番目のエピソードで得られた方策に従いエージェントが行動する様子です。
 ![エピソード30](images/episode_30.gif)

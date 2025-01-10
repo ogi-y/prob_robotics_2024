@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 import env_loader
 import os
 
-env_settings = env_loader.load_env('env.csv')
-n_states = env_settings['n_states']
-goal_state = env_settings['goal_state']
-start_state = env_settings['start_state']
-obstacles = env_settings['obstacles']
-water = env_settings['water']
-actions = env_settings['actions']
+env_settings = env_loader.load_env("env.csv")
+n_states = env_settings["n_states"]
+goal_state = env_settings["goal_state"]
+start_state = env_settings["start_state"]
+obstacles = env_settings["obstacles"]
+water = env_settings["water"]
+actions = env_settings["actions"]
 
 eps = 0.3
 max_steps = 1000
@@ -37,9 +37,9 @@ def get_goal_time(policy):
 def calculate_average_goal_time():
     goal_times = []
     
-    for episode_num in range(episodes):
+    for episode_num in range(1,episodes+1):
         episode_goal_times = []
-        policy_path = f'policy/episode_{episode_num}.npy'
+        policy_path = f"policy/episode_{episode_num}.npy"
         if not os.path.exists(policy_path):
             print(f"Policy file {policy_path} not found. Skipping.")
             goal_times.append(np.nan)
@@ -56,15 +56,15 @@ def calculate_average_goal_time():
 
 goal_times = calculate_average_goal_time()
 
-plt.plot(range(1,episodes+1), goal_times, marker='o', linestyle='-', color='b')
-plt.title('Average Goal Reaching Step per Episode')
-plt.xlabel('Episode')
-plt.ylabel('Average Steps to Goal')
+plt.plot(range(1,episodes+1), goal_times, marker="o", linestyle="-", color="b")
+plt.title("Average Goal Reaching Step per Episode")
+plt.xlabel("Episode")
+plt.ylabel("Average Steps to Goal")
 plt.xticks(range(1,episodes+1))
 plt.grid(True)
 
 for i, goal_time in enumerate(goal_times):
-    plt.text(i, goal_time+5, f'{goal_time:.1f}', ha='center', fontsize=10)
+    plt.text(i, goal_time+5, f"{goal_time:.1f}", ha="center", fontsize=10)
 
 #plt.show()
-plt.savefig('images/average_goal_time.png')
+plt.savefig("images/average_goal_time.png")

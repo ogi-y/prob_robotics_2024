@@ -3,13 +3,13 @@ import random
 import env_loader
 import os
 
-env_settings = env_loader.load_env('env.csv')
-n_states = env_settings['n_states']
-goal_state = env_settings['goal_state']
-start_state = env_settings['start_state']
-obstacles = env_settings['obstacles']
-water = env_settings['water']
-actions = env_settings['actions']
+env_settings = env_loader.load_env("env.csv")
+n_states = env_settings["n_states"]
+goal_state = env_settings["goal_state"]
+start_state = env_settings["start_state"]
+obstacles = env_settings["obstacles"]
+water = env_settings["water"]
+actions = env_settings["actions"]
 
 alpha = 0.5
 epsilon = 0.3
@@ -34,8 +34,8 @@ def choose_action(state):
     else:
         return np.argmax(Q_table[state])
 
-if not os.path.exists('policy'):
-        os.makedirs('policy')
+if not os.path.exists("policy"):
+        os.makedirs("policy")
 
 for episode in range(episodes):
     state = start_state
@@ -51,6 +51,6 @@ for episode in range(episodes):
 
     if episode % 1 == 0 or episode == episodes - 1:
         policy = [actions[np.argmax(Q_table[state])] for state in range(n_states)]
-        np.save(f'policy/episode_{episode+1}.npy', policy)
+        np.save(f"policy/episode_{episode+1}.npy", policy)
 
 print("学習終了")
